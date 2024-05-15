@@ -1,9 +1,28 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import Modal from 'react-modal';
+
+import { Link } from "react-router-dom";
+import "./Comp/Routing.jsx";
 
 import './Css/App.css'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [showMessage, setShowMessage] = useState(false);
+
+  useEffect(() => {
+    const Messaged = localStorage.getItem('messaged');
+    if (!Messaged) { 
+    const timer = setTimeout(() => {
+      setShowMessage(true);
+      localStorage.setItem("messaged", "true");
+    }, 2000);}
+  }, []); 
+
+  const handleCloseMessage = () => {
+    setShowMessage(false);
+  };
+
 
   return (
     
@@ -18,10 +37,20 @@ function App() {
             <li><a href="#">Home</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Services</a></li>
-            <li><a href="#">Contact</a></li>
+            <Link to="/contact">
+              <button>Contact</button>
+            </Link>
           </ul>
         </nav>
       </header>
+      <Modal isOpen={showMessage} onRequestClose={handleCloseMessage} className="modal"  style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0.5)' } }}>
+        <div className="modal-content">
+        <h2>Vi bryr oss om ditt personvern </h2>
+        <p>Denne nettsiden bruker Cookies for den beste opplevelsen</p>
+        <button onClick={handleCloseMessage}>Aksepter og lukk</button>
+        </div>
+        
+      </Modal>
       <main className="main-content">
         {/* Your main content goes here */}
       </main>
